@@ -8,11 +8,6 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_HOSTNAME: str
 
-    PGDATABASE : str
-    PGHOST : str
-    PGPASSWORD : str
-    PGPORT : str
-    PGUSER : str
     db_url : str
 
     JWT_PUBLIC_KEY: str
