@@ -1,27 +1,64 @@
+import uvicorn
 from fastapi import FastAPI
-from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
+import models
+from controllers.admin import admin
+from controllers.admin.admin import admin_router
+from controllers.auth.auth import router
+from controllers.user.user import user_router
+from database.database import engine
+from controllers.transaction.transactions import transac_router
+app = FastAPI(
+    docs_url="/docs",
+    redoc_url="/redocs",
+    title="KUVER_TEC",
+    description="KUVER_TEC BACKEND API",
+    version="0.10",
+    openapi_url="/openapi.json"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
 
-app = FastAPI()
 
-class Msg(BaseModel):
-    msg: str
+def create_tables():  # new
+    models.Base.metadata.create_all(bind=engine)
+
+
+@app.on_event("startup")
+async def startup():
+    create_tables()
+    print("creating tables and starting app up")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    print("app shutdown")
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World. Welcome to FastAPI!"}
+def main():
+    return RedirectResponse(url="/docs/")
 
 
-@app.get("/path")
-async def demo_get():
-    return {"message": "This is /path endpoint, use a post request to transform the text to uppercase"}
+@app.get('/api/healthchecker')
+def root():
+    return {'message': 'Welcome To  KUVER_TEC Api'}
 
 
-@app.post("/path")
-async def demo_post(inp: Msg):
-    return {"message": inp.msg.upper()}
+# app.include_router(auth_router.router, tags=["Auth"])
+app.include_router(router, tags=["Authentication"])
+app.include_router(user_router, tags=["User Account"])
+app.include_router(transac_router, tags=["Transaction Actions"])
+app.include_router(admin_router, tags=["Admin Actions"])
+# app.include_router(adminRoute, tags=["Admin Action"])
+# app.include_router(user_router, tags=["User"])
+# app.include_router(post_router, tags=["Post"])
 
-
-@app.get("/path/{path_id}")
-async def demo_get_path_id(path_id: int):
-    return {"message": f"This is /path/{path_id} endpoint, use post request to retrieve result"}
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port="1997")

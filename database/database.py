@@ -4,7 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from config import settings
 
 # SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
-SQLALCHEMY_DATABASE_URL = f"postgresql://kuver_user:XOA2QW32iW0zr0wFoGAonr016iZlUWN3@dpg-cectsrqrrk0dhqqkmtcg-a.oregon-postgres.render.com/kuver"
+# SQLALCHEMY_DATABASE_URL = f"postgresql://kuver_user:XOA2QW32iW0zr0wFoGAonr016iZlUWN3@dpg-cectsrqrrk0dhqqkmtcg-a.oregon-postgres.render.com/kuver"
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:WnCftrL11ioK0Q6dTI42@containers-us-west-24.railway.app:6520/railway"
+
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
 )
