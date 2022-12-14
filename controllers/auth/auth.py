@@ -54,7 +54,6 @@ async def create_user(payload: schemas.CreateUserSchema, db: Session = Depends(g
                                    "capital letter, "
                                    "small letter and a symbol")
 
-
     payload.password = password_encoder.hash_password(payload.password)
     del payload.password_confirm
     payload.email = EmailStr(payload.email.lower())

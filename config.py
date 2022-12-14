@@ -8,6 +8,13 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_HOSTNAME: str
 
+    PGDATABASE : str
+    PGHOST : str
+    PGPASSWORD : str
+    PGPORT : str
+    PGUSER : str
+    db_url : str
+
     JWT_PUBLIC_KEY: str
     JWT_PRIVATE_KEY: str
     REFRESH_TOKEN_EXPIRES_IN: int
